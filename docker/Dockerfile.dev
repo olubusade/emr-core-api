@@ -1,0 +1,24 @@
+# Development Dockerfile
+# Optimized for hot-reloading and developer experience (DX)
+FROM node:20
+
+WORKDIR /usr/src/app
+
+# Install dependencies
+# We use 'npm install' here instead of 'ci' to allow for 
+# rapid experimentation with new packages in dev.
+COPY package*.json ./
+RUN npm install
+
+# Install dev helper
+# Nodemon is essential for hot-reloading the Express server 
+# whenever source files are saved.
+RUN npm install -g nodemon
+
+# Copy source
+# In development, this serves as a fallback; the actual source 
+# is usually mounted as a volume in docker-compose.
+COPY . .
+
+EXPOSE 5000
+CMD ["npm", "run", "dev"]

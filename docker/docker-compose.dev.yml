@@ -1,0 +1,43 @@
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    container_name: busade-emr-backend-dev
+    env_file:
+      - ../.env.docker.dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - ../src:/usr/src/app/src
+      - ../package.json:/usr/src/app/package.json
+      - ../package-lock.json:/usr/src/app/package-lock.json
+      - /usr/src/app/node_modules # Anonymous volume to prevent host node_modules override
+      - ../logs:/usr/src/app/logs
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: busade-emr-db-dev
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+        - "5433:5432"   # host:container
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    
+    healthcheck:
+      test: ["CMD-SHELL", "${DB_TEST}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data_dev:
+

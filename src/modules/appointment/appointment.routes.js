@@ -1,0 +1,291 @@
+import express from 'express';
+import * as appt from './appointment.controller.js';
+import { authRequired } from '../../shared/middlewares/auth.middleware.js';
+import { authorize } from '../../shared/middlewares/permission.middleware.js';
+import { validate } from '../../shared/utils/validation.js';
+import {
+  createAppointmentSchema,
+  updateAppointmentSchema,
+  getAppointmentSchema,
+  listAppointmentsSchema
+} from '../../shared/validation/index.js';
+import { PERMISSIONS } from '../../constants/index.js';
+import { asyncHandler } from '../../shared/utils/asyncHandler.js';
+
+const router = express.Router();
+
+/**
+ * @swagger
+ * tags:
+ *   name: Appointments
+ * 
+ *   description: Clinical scheduling and patient workflow management
+ */
+
+/**
+ * @swagger
+ * /appointments:
+ *   get:
+ *     summary: List appointments with filters and pagination
+ *     tags: [Appointments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         example: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         example: 20
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: [scheduled, checked_in, awaiting_vitals, vitals_taken, in_consultation, completed, canceled]
+ *       - in: query
+ *         name: timeFrame
+ *         schema:
+ *           type: string
+ *           enum: [PAST, UPCOMING, TODAY, ALL]
+ *       - in: query
+ *         name: type
+ *         schema:
+ *           type: string
+ *           enum: [consultation, follow_up, emergency, admission,procedure]
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search by patient name
+ *     responses:
+ *       200:
+ *         description: Paginated list of appointments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/PaginatedResponse'
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ */
+router.get(
+  '/',
+  authRequired,
+  authorize(PERMISSIONS.APPOINTMENT_READ),
+  validate(listAppointmentsSchema),
+  asyncHandler(appt.listAppointments)
+);
+
+/**
+ * @swagger
+ * /appointments:
+ *   post:
+ *     summary: Create a new appointment
+ *     tags: [Appointments]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateAppointment'
+ *           example:
+ *             patientId: "550e8400-e29b-41d4-a716-446655440000"
+ *             staffId: "550e8400-e29b-41d4-a716-446655440001"
+ *             appointmentDate: "2026-04-12"
+ *             appointmentTime: "10:30"
+ *             type: "consultation"
+ *             reason: "Routine checkup"
+ *     responses:
+ *       201:
+ *         description: Appointment created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Appointment'
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ */
+router.post(
+  '/',
+  authRequired,
+  authorize(PERMISSIONS.APPOINTMENT_CREATE),
+  validate(createAppointmentSchema),
+  asyncHandler(appt.createAppointment)
+);
+
+/**
+ * @swagger
+ * /appointments/{id}:
+ *   get:
+ *     summary: Get appointment by ID
+ *     tags: [Appointments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: Appointment details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Appointment'
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Appointment not found
+ */
+router.get(
+  '/:id',
+  authRequired,
+  authorize(PERMISSIONS.APPOINTMENT_READ),
+  validate(getAppointmentSchema),
+  asyncHandler(appt.listAppointments)
+);
+
+/**
+ * @swagger
+ * /appointments/{id}:
+ *   put:
+ *     summary: Update an appointment
+ *     tags: [Appointments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateAppointment'
+ *     responses:
+ *       200:
+ *         description: Appointment updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Appointment'
+ *       400:
+ *         description: Invalid request or transition
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ */
+router.put(
+  '/:id',
+  authRequired,
+  authorize(PERMISSIONS.APPOINTMENT_UPDATE),
+  validate(updateAppointmentSchema),
+  asyncHandler(appt.updateAppointment)
+);
+
+/**
+ * @swagger
+ * /appointments/{id}:
+ *   delete:
+ *     summary: Cancel an appointment
+ *     tags: [Appointments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       204:
+ *         description: Appointment cancelled successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ */
+router.delete(
+  '/:id',
+  authRequired,
+  authorize(PERMISSIONS.APPOINTMENT_DELETE),
+  validate(getAppointmentSchema),
+  asyncHandler(appt.cancelAppointment)
+);
+
+/**
+ * PATCH /appointments/:id/status
+ */
+/**
+ * @swagger
+ * /appointments/{id}/status:
+ *   patch:
+ *     summary: Update appointment status (Check-in / Check-out / etc.)
+ *     tags: [Appointments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Appointment ID
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - status
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 enum: [scheduled, checked_in, in_consultation, completed]
+ *                 example: checked_in
+ *               reason:
+ *                 type: string
+ *                 example: Patient arrived at front desk
+ *     responses:
+ *       200:
+ *         description: Appointment status updated successfully
+ *       400:
+ *         description: Invalid request
+ *       404:
+ *         description: Appointment not found
+ *       401:
+ *         description: Unauthorized
+ */
+router.patch(
+  '/:id/status',
+  authRequired,
+  authorize(PERMISSIONS.APPOINTMENT_UPDATE),
+  validate(getAppointmentSchema),
+  asyncHandler(appt.updateAppointmentStatus)
+);
+
+
+export default router;
