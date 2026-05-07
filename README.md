@@ -19,31 +19,46 @@
 ![Architecture](https://img.shields.io/badge/Architecture-DDD-purple?style=flat-square)
 
 ---
+# 🎥 Backend API Demo & Architecture
 
-## 🎥 System Demo (Full Workflow)
+## ▶️ EMR System Overview (Start Here)
 
-▶️ [https://emr.busade.dev](https://emr.busade.dev)
+Short recruiter-focused walkthrough demonstrating the backend architecture, healthcare workflows, security model, audit system, and deployment strategy.
+
+🔗 https://www.loom.com/share/161b3c2a1d934ccebc54a68b4a5f942e
+
+
+## 🎥 Backend API Walkthrough (Full Demo)
+
+▶️ https://www.loom.com/share/72c27a93d7fc4a1480e3ba78dfae0fa6
 
 **Covers:**
 
-* Authentication (JWT + refresh token flow)
-* Role & Permission-based access (RBAC + PBAC)
-* Patient lifecycle
-* Clinical workflows (SOAP notes, vitals / Triage)
-* Billing & invoices
-* 🚨 Break-the-Glass (BTG Emergency Access) + Access Tracking
-* 🔗 FHIR interoperability endpoints
-* Swagger live API testing
+* JWT Authentication + Refresh Token Flow
+* Role-Based & Permission-Based Access Control (RBAC + PBAC)
+* Patient Lifecycle Management
+* Clinical Workflows (SOAP Notes, Vitals / Triage)
+* Billing & Invoice APIs
+* 🚨 Break-The-Glass (BTG Emergency Access)
+* 🔍 Immutable Audit Trail Logging
+* 🔗 FHIR-Ready Interoperability Endpoints
+* 📘 Swagger Live API Testing
+* 🐳 Dockerized Development Environment
+* ⚙️ PM2 Production Deployment
+* 🔄 CI/CD Automation (GitHub Actions)
+
 
 ---
 
-## 🌍 Live System
+# 🌍 Live System
 
-- <a href="https://emrapi.busade.dev/api/health" target="_blank" rel="noopener noreferrer">System Live Health Check</a>
+- <a href="https://emrapi.busade.dev/api/health" target="_blank" rel="noopener noreferrer">System Health Check</a>
+
 - <a href="https://emrapi.busade.dev/api/docs" target="_blank" rel="noopener noreferrer">Swagger API Documentation</a>
-- <a href="https://emr.busade.dev" target="_blank" rel="noopener noreferrer">Frontend</a>
----
 
+- <a href="https://emr.busade.dev" target="_blank" rel="noopener noreferrer">Live Frontend Application</a>
+
+---
 
 ## 🧠 SYSTEM OVERVIEW
 
