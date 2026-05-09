@@ -21,9 +21,9 @@
 ---
 # 🎥 Backend API Demo & Architecture
 
-## ▶️ EMR System Overview (Start Here)
+## ▶️ Watch the System Overview & Technical Walkthrough
 
-Short recruiter-focused walkthrough demonstrating the backend architecture, healthcare workflows, security model, audit system, and deployment strategy.
+A robust, compliance-first Electronic Medical Record (EMR) frontend and backend designed for high-stakes clinical environments. This system bridges the gap between modern cloud-native architecture and rigorous healthcare data standards, focusing on data integrity, forensic auditability, and interoperable communication.
 
 🔗 https://www.loom.com/share/161b3c2a1d934ccebc54a68b4a5f942e
 
@@ -198,6 +198,8 @@ The system simulates real-world hospital operations:
 
 # 🏗️ Architecture Philosophy (DDD Modular Design)
 The system is structured around **business domains rather than technical layers**, following Domain-Driven Design (DDD).
+
+> **Domain-Driven Design (DDD):** I implemented DDD to ensure the system remains maintainable and decoupled as clinical modules—like Billing or Labs—grow in complexity. This approach mirrors the architecture of large-scale hospital infrastructures.
 
 Key architectural decisions:
 
@@ -417,6 +419,8 @@ server.js             → Application entry point (server bootstrap, port bindin
 * Auto-expiry via cron job
 * Full audit logging
 
+**Architectural Philosophy:** The BTG system was designed to balance patient privacy with clinical urgency, a core requirement for high-availability healthcare platforms where data access can be a matter of life or death.
+
 ```js
 // Auto-expiry job
 await BTGRequest.update(
@@ -614,6 +618,8 @@ Tracks:
 * Request latency
 * Error rates
 * Endpoint performance
+
+**Performance Monitoring:** I utilize Prometheus specifically to monitor P99 latency on critical FHIR endpoints, ensuring the system meets the high-performance requirements of real-time clinical environments.
 
 ---
 
