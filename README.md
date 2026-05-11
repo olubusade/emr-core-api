@@ -738,9 +738,20 @@ Security & compliance (RBAC, PBAC, audit logging, BTG - emergency access)
 ✔ **Passionate about building global-standard healthcare infrastructure from Africa for global markets*
 
 ---
+
 ## 📜 License
 
 MIT © 2026 - Busade Adedayo
+
+---
+## 👨‍💻 Author
+
+<p align="center">
+  <img src="./docs/Busade-profile-card-1.png" alt="Busade Adedayo Profile Card" width="600">
+</p>
+
+**Senior Software Architect | HealthTech Specialist**
+Focused on building secure, scalable, and HIPAA-aligned clinical systems.
 
 ---
 
