@@ -726,13 +726,14 @@ cron.schedule('*/5 * * * *', async () => {
 **Busade Adedayo**
 *Senior Software Engineer / Solution Architect (Healthcare Systems)*
 
-* 5-8+ years of experience building and scaling production-grade **Electronic Medical Record (EMR)** systems
+* 10+ years of total experience in full-stack engineering and systems architecture.
+* 7+ years specialized in HealthTech, architecting and scaling production-grade Electronic Medical Record (EMR) systems.**Electronic Medical Record (EMR)** systems
 Led architecture and development of domain-driven, modular healthcare platforms used in real clinical workflows
 Strong focus on:
 ✔  Clinical workflow digitization (SOAP notes, vitals, prescriptions)
 ✔ System architecture & scalability (DDD, modular monolith design)
 ✔ Healthcare interoperability (FHIR R4 standards)
-Security & compliance (RBAC, PBAC, audit logging, BTG - emergency access)
+✔ Security & Compliance: Specialized in RBAC/PBAC, HIPAA-aligned audit logging, and "Break-the-Glass" (BTG) emergency access protocols
 ✔ Experienced in designing enterprise backend systems with observability, logging, and monitoring layers
 ✔ AWS Cloud Practitioner certified | Preparing for AWS Solutions Architect - Associate
 ✔ **Passionate about building global-standard healthcare infrastructure from Africa for global markets*
